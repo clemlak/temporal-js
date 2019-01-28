@@ -10,7 +10,6 @@ describe('Temporal JS API', () => {
   let username;
   let email;
   let password;
-  let token;
   let keyName;
   let savedHash;
   const hashToPin = 'QmYA2fn8cMbVWo4v95RwcwJVyQsNtnEwHerfWR8UNtEwoE';
@@ -42,8 +41,6 @@ describe('Temporal JS API', () => {
     password,
   )
     .then((res) => {
-      ({ token } = res);
-
       assert.isObject(res, 'Response is not an object');
     }));
 
@@ -57,7 +54,7 @@ describe('Temporal JS API', () => {
       assert.isNumber(credits, 'Credits is not a number');
     }));
 
-  it('Should generate a new IPFS key', () => temporal.generateIpfsKey('rsa', '2018', 'test'));
+  it('Should generate a new IPFS key', () => temporal.generateIpfsKey('rsa', '256', 'key2019RSA'));
 
   it('Should get the IPFS keys', () => temporal.getIpfsKeys()
     .then((res) => {
@@ -105,6 +102,15 @@ describe('Temporal JS API', () => {
 
   it('Should download the file from some hash', () => temporal.download(hashToDownload)
     .then((file) => {
+      assert.isObject(file, 'File is not an object');
       file.pipe(fs.createWriteStream('./test/test.jpg'));
     }));
+
+  it('Should publish IPNS records to public networks', () => temporal.publishDetails(
+    savedHash,
+    '24h',
+    '24h',
+    keyName,
+    'false',
+  ));
 });
