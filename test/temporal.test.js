@@ -12,7 +12,9 @@ describe('Temporal JS API', () => {
   let password;
   let token;
   let keyName;
+  let savedHash;
   const hashToPin = 'QmYA2fn8cMbVWo4v95RwcwJVyQsNtnEwHerfWR8UNtEwoE';
+  const hashToDownload = 'Qmct5P3seR6o5kSanpcebR2FbAGFcN5qGRwvwqegQ4DVuj';
 
   before(() => {
     username = Utils.randomString();
@@ -80,6 +82,7 @@ describe('Temporal JS API', () => {
   )
     .then((res) => {
       assert.isString(res, 'Res is not a string');
+      savedHash = res;
     }));
 
   it('Should pin a new hash', () => temporal.pin(hashToPin, 5));
@@ -98,5 +101,10 @@ describe('Temporal JS API', () => {
       for (let i = 0; i < dag.links.length; i += 1) {
         assert.hasAllKeys(dag.links[i], ['Cid', 'Name', 'Size'], 'Keys are wrong');
       }
+    }));
+
+  it('Should download the file from some hash', () => temporal.download(hashToDownload)
+    .then((file) => {
+      file.pipe(fs.createWriteStream('./test/test.jpg'));
     }));
 });
