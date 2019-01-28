@@ -10,6 +10,7 @@ describe('Temporal', () => {
   let email;
   let password;
   let token;
+  let keyName;
 
   before(() => {
     username = Utils.randomString();
@@ -37,8 +38,26 @@ describe('Temporal', () => {
     password,
   )
     .then((res) => {
-      token = res.token;
-      
+      ({ token } = res);
+
       assert.isObject(res, 'Response is not an object');
+    }));
+
+  it('Should return the username from the token', () => temporal.getUsernameFromToken()
+    .then((res) => {
+      assert.equal(res, username, 'Username is wrong');
+    }));
+
+  it('Should generate a new IPFS key', () => temporal.generateIpfsKey('rsa', '2018', 'test'));
+
+  it('Should get the IPFS keys', () => temporal.getIpfsKeys()
+    .then((res) => {
+      assert.hasAllKeys(res, ['key_ids', 'key_names'], 'Keys are not present');
+      [keyName] = res.key_names;
+    }));
+
+  it('Should export the key', () => temporal.exportKey(keyName)
+    .then((mnemonic) => {
+      assert.isArray(mnemonic, 'Mnemonic is not an array');
     }));
 });
