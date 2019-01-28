@@ -4,7 +4,7 @@ const { assert } = require('chai');
 const Temporal = require('..');
 const Utils = require('./utils');
 
-describe('Temporal', () => {
+describe('Temporal JS API', () => {
   let temporal;
   let username;
   let email;
