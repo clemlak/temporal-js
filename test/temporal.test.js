@@ -83,4 +83,10 @@ describe('Temporal JS API', () => {
     }));
 
   it('Should pin a new hash', () => temporal.pin(hashToPin, 5));
+
+  it('Should get the stats of some hash', () => temporal.getObjectStat(hashToPin)
+    .then((stats) => {
+      assert.hasAllKeys(stats, ['Hash', 'BlockSize', 'CumulativeSize', 'DataSize', 'LinksSize', 'NumLinks'], 'Keys are wrong');
+      assert.equal(stats.Hash, hashToPin, 'Hash is wrong');
+    }));
 });
