@@ -53,8 +53,6 @@ describe('Temporal JS API', () => {
       assert.isNumber(credits, 'Credits is not a number');
     }));
 
-  it('Should refresh the auth token', () => temporal.refreshAuthToken());
-
   it('Should generate a new IPFS key', () => temporal.generateIpfsKey('rsa', '2018', 'test'));
 
   it('Should get the IPFS keys', () => temporal.getIpfsKeys()
@@ -66,5 +64,11 @@ describe('Temporal JS API', () => {
   it('Should export the key', () => temporal.exportKey(keyName)
     .then((mnemonic) => {
       assert.isArray(mnemonic, 'Mnemonic is not an array');
+    }));
+
+  it('Should publish a message to the given pubsub topic', () => temporal.publishPubSubMessage('foo', 'bar')
+    .then((res) => {
+      assert.equal(res.topic, 'foo', 'Topic is wrong');
+      assert.equal(res.message, 'bar', 'Message is wrong');
     }));
 });
