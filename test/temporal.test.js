@@ -12,7 +12,7 @@ describe('Temporal JS API', () => {
   let password;
   let token;
   let keyName;
-  let hashToPin = 'QmYA2fn8cMbVWo4v95RwcwJVyQsNtnEwHerfWR8UNtEwoE';
+  const hashToPin = 'QmYA2fn8cMbVWo4v95RwcwJVyQsNtnEwHerfWR8UNtEwoE';
 
   before(() => {
     username = Utils.randomString();
