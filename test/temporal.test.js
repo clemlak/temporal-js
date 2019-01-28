@@ -53,6 +53,13 @@ describe('Temporal', () => {
       assert.isNumber(credits, 'Credits is not a number');
     }));
 
+  it('Should refresh the auth token', () => temporal.refreshAuthToken()
+    .then((res) => {
+      ({ token } = res);
+
+      assert.isObject(res, 'Response is not an object');
+    }));
+
   it('Should generate a new IPFS key', () => temporal.generateIpfsKey('rsa', '2018', 'test'));
 
   it('Should get the IPFS keys', () => temporal.getIpfsKeys()
