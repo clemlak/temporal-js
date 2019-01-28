@@ -89,4 +89,14 @@ describe('Temporal JS API', () => {
       assert.hasAllKeys(stats, ['Hash', 'BlockSize', 'CumulativeSize', 'DataSize', 'LinksSize', 'NumLinks'], 'Keys are wrong');
       assert.equal(stats.Hash, hashToPin, 'Hash is wrong');
     }));
+
+  it('Should get the dag from some hash', () => temporal.getDag(hashToPin)
+    .then((dag) => {
+      assert.hasAllKeys(dag, ['data', 'links'], 'Keys are wrong');
+      assert.isArray(dag.links, 'Links is not an array');
+
+      for (let i = 0; i < dag.links.length; i += 1) {
+        assert.hasAllKeys(dag.links[i], ['Cid', 'Name', 'Size'], 'Keys are wrong');
+      }
+    }));
 });
