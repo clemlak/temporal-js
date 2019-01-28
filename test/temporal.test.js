@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 
+const fs = require('fs');
 const { assert } = require('chai');
 const Temporal = require('..');
 const Utils = require('./utils');
@@ -11,6 +12,7 @@ describe('Temporal JS API', () => {
   let password;
   let token;
   let keyName;
+  let hashToPin = 'QmYA2fn8cMbVWo4v95RwcwJVyQsNtnEwHerfWR8UNtEwoE';
 
   before(() => {
     username = Utils.randomString();
@@ -71,4 +73,14 @@ describe('Temporal JS API', () => {
       assert.equal(res.topic, 'foo', 'Topic is wrong');
       assert.equal(res.message, 'bar', 'Message is wrong');
     }));
+
+  it('Should upload a public file', () => temporal.uploadPublicFile(
+    fs.createReadStream('./test/test.txt'),
+    5,
+  )
+    .then((res) => {
+      assert.isString(res, 'Res is not a string');
+    }));
+
+  it('Should pin a new hash', () => temporal.pin(hashToPin, 5));
 });
