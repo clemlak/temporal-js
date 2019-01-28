@@ -48,6 +48,11 @@ describe('Temporal', () => {
       assert.equal(res, username, 'Username is wrong');
     }));
 
+  it('Should return the available credits of the user', () => temporal.getCredits()
+    .then((credits) => {
+      assert.isNumber(credits, 'Credits is not a number');
+    }));
+
   it('Should generate a new IPFS key', () => temporal.generateIpfsKey('rsa', '2018', 'test'));
 
   it('Should get the IPFS keys', () => temporal.getIpfsKeys()
