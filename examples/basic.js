@@ -1,36 +1,40 @@
+const fs = require('fs');
+
 const Temporal = require('..');
+const Utils = require('../test/utils');
 
 const temporal = new Temporal();
 
-/*
-temporal.register('clem2', 'clem2@test.com', 'hello')
-  .then((res) => {
-    console.log('Registred!', res);
+const username = Utils.randomString();
+const email = `${username}@test.com`;
+const password = Utils.randomString();
 
-    return temporal.login('clem2', 'hello');
+temporal.register(username, email, password)
+  .then(() => {
+    console.log('User is registered!');
+
+    return temporal.login(username, password);
   })
-  .then((res) => {
-    console.log('Logged in', res);
+  .then(() => {
+    console.log('User is logged in!');
 
     return temporal.generateIpfsKey('rsa', '2018', 'test');
   })
-  .then((res) => {
-    console.log(res);
+  .then(() => {
+    console.log('IPFS key is being generated!');
 
     return temporal.getIpfsKeys();
   })
   .then((res) => {
     console.log(res);
-  })
-  .catch((err) => {
-    console.log('Error:', err);
-  });
-*/
 
-temporal.login('clem2', 'hello')
-  .then(() => temporal.getIpfsKeys())
+    return temporal.uploadPublicFile(
+      fs.createReadStream('./examples/hello.txt'),
+      5,
+    );
+  })
   .then((res) => {
-    console.log(res);
+    console.log('File has been saved at:', res);
   })
   .catch((err) => {
     console.log('Error:', err);
