@@ -60,6 +60,7 @@ describe('Temporal JS API', () => {
     .then((res) => {
       assert.hasAllKeys(res, ['key_ids', 'key_names'], 'Keys are not present');
       [keyName] = res.key_names;
+      assert.isNotEmpty(keyName, 'Key is empty');
     }));
 
   it('Should export the key', () => temporal.exportKey(keyName)
@@ -75,14 +76,14 @@ describe('Temporal JS API', () => {
 
   it('Should upload a public file', () => temporal.uploadPublicFile(
     fs.createReadStream('./test/test.txt'),
-    5,
+    1,
   )
     .then((res) => {
       assert.isString(res, 'Res is not a string');
       savedHash = res;
     }));
 
-  it('Should pin a new hash', () => temporal.pin(hashToPin, 5));
+  it('Should pin a new hash', () => temporal.pin(hashToPin, 1));
 
   it('Should get the stats of some hash', () => temporal.getObjectStat(hashToPin)
     .then((stats) => {
