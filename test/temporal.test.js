@@ -12,20 +12,26 @@ describe('Temporal JS API', () => {
   let password;
   let keyName;
   let savedHash;
-  const hashToPin = 'QmYA2fn8cMbVWo4v95RwcwJVyQsNtnEwHerfWR8UNtEwoE';
   const hashToDownload = 'Qmct5P3seR6o5kSanpcebR2FbAGFcN5qGRwvwqegQ4DVuj';
+  let newHash = '';
 
   before(() => {
+    /*
     username = Utils.randomString();
     email = `${Utils.randomString()}@email.com`;
     password = Utils.randomString();
+    */
+
+    username = 'test20190703';
+    email = 'test20190703@yopmail.com';
+    password = 'securepassword';
   });
 
   it('Should create a new instance of the Temporal library', () => {
     temporal = new Temporal();
   });
 
-  it('Should create a new account', () => temporal.register(
+  it.skip('Should create a new account', () => temporal.register(
     username,
     email,
     password,
@@ -54,12 +60,13 @@ describe('Temporal JS API', () => {
       assert.isNumber(credits, 'Credits is not a number');
     }));
 
-  it('Should generate a new IPFS key', () => temporal.generateIpfsKey('rsa', '256', 'key2019RSA'));
+  it('Should generate a new IPFS key', () => temporal.generateIpfsKey('rsa', '256', Utils.randomString()));
 
   it('Should get the IPFS keys', () => temporal.getIpfsKeys()
     .then((res) => {
       assert.hasAllKeys(res, ['key_ids', 'key_names'], 'Keys are not present');
       [keyName] = res.key_names;
+
       assert.isNotEmpty(keyName, 'Key is empty');
     }));
 
@@ -81,17 +88,18 @@ describe('Temporal JS API', () => {
     .then((res) => {
       assert.isString(res, 'Res is not a string');
       savedHash = res;
+      newHash = res;
     }));
 
-  it('Should pin a new hash', () => temporal.pin(hashToPin, 1));
+  it('Should pin a new hash', () => temporal.pin(newHash, 1));
 
-  it('Should get the stats of some hash', () => temporal.getObjectStat(hashToPin)
+  it('Should get the stats of some hash', () => temporal.getObjectStat(newHash)
     .then((stats) => {
       assert.hasAllKeys(stats, ['Hash', 'BlockSize', 'CumulativeSize', 'DataSize', 'LinksSize', 'NumLinks'], 'Keys are wrong');
-      assert.equal(stats.Hash, hashToPin, 'Hash is wrong');
+      assert.equal(stats.Hash, newHash, 'Hash is wrong');
     }));
 
-  it('Should get the dag from some hash', () => temporal.getDag(hashToPin)
+  it('Should get the dag from some hash', () => temporal.getDag(newHash)
     .then((dag) => {
       assert.hasAllKeys(dag, ['data', 'links'], 'Keys are wrong');
       assert.isArray(dag.links, 'Links is not an array');
@@ -123,7 +131,7 @@ describe('Temporal JS API', () => {
       assert.isString(res, 'Res is not a string');
     }));
 
-  it('Should extend the pin of the hash', () => temporal.extendPin(hashToPin, 1));
+  it('Should extend the pin of the hash', () => temporal.extendPin(newHash, 1));
 
   it('Should search for a particular file', () => temporal.searchRequest(
     'blockchain',
@@ -135,5 +143,11 @@ describe('Temporal JS API', () => {
   )
     .then((res) => {
       assert.isArray(res, 'Result is not an array');
+    }));
+
+  it('Should submit a file for indexing to the Lens database', () => temporal.indexRequest(savedHash, 'ipld')
+    .then((res) => {
+      console.log(res);
+      assert.hasAllKeys(res, ['name', 'mimeType', 'category'], 'Keys are not present');
     }));
 });
