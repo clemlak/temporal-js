@@ -114,4 +114,26 @@ describe('Temporal JS API', () => {
     keyName,
     'false',
   ));
+
+  it('Should upload a directory', () => temporal.uploadDirectory(
+    fs.createReadStream('./test/test.zip'),
+    1,
+  )
+    .then((res) => {
+      assert.isString(res, 'Res is not a string');
+    }));
+
+  it('Should extend the pin of the hash', () => temporal.extendPin(hashToPin, 1));
+
+  it('Should search for a particular file', () => temporal.searchRequest(
+    'blockchain',
+    [],
+    [],
+    [],
+    [],
+    [],
+  )
+    .then((res) => {
+      assert.isArray(res, 'Result is not an array');
+    }));
 });
