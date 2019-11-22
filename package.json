@@ -1,22 +1,41 @@
 {
-  "name": "temporal",
-  "version": "0.0.1",
-  "description": "",
+  "name": "temporal-js",
+  "version": "2.0.0",
+  "description": "a javascript+typescript client for Temporal IPFS API",
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 100000"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RTradeLtd/temporal-js.git"
+  },
+  "homepage": "https://github.com/RTradeLtd/temporal-js",
+  "keywords": [
+    "ipfs",
+    "temporal",
+    "sdk",
+    "temporal-js"
+  ],
+  "author": "clemlak (https://github.com/clemlak/)",
+  "contributors": [
+    "bonedaddy (https://github.com/bonedaddy"
+  ],
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
+    "@types/node": "^12.12.11",
+    "@types/query-string": "^6.3.0",
+    "@types/request-promise-native": "^1.0.17",
+    "axios": "^0.19.0",
     "chai": "^4.2.0",
+    "ipfs-http-client": "^40.0.0",
+    "querystring": "^0.2.0",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.8"
   },
   "devDependencies": {
-    "eslint": "^5.12.1",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.15.0"
+    "eslint": "^6.7.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
   }
 }
