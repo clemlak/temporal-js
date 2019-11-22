@@ -1,5 +1,5 @@
 import axios from 'axios';
-import querystring from 'querystring';
+import * as querystring from 'querystring';
 import rp from 'request-promise-native';
 
 
@@ -441,3 +441,5 @@ class Temporal {
         });
     }
 }
+
+module.exports = Temporal;

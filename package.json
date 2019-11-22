@@ -1,7 +1,7 @@
 {
   "name": "temporal-js",
-  "version": "1.0.1",
-  "description": "a javascript client for Temporal IPFS API",
+  "version": "1.0.2",
+  "description": "a javascript+typescript client for Temporal IPFS API",
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 100000"
@@ -23,8 +23,12 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^12.12.11",
+    "@types/query-string": "^6.3.0",
+    "@types/request-promise-native": "^1.0.17",
     "axios": "^0.19.0",
     "chai": "^4.2.0",
+    "querystring": "^0.2.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.8"
   },
