@@ -28,6 +28,7 @@
     "@types/request-promise-native": "^1.0.17",
     "axios": "^0.19.0",
     "chai": "^4.2.0",
+    "ipfs-http-client": "^40.0.0",
     "querystring": "^0.2.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.8"

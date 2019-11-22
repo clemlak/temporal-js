@@ -1,28 +1,32 @@
 import axios from 'axios';
 import * as querystring from 'querystring';
 import rp from 'request-promise-native';
-
+import ipfsapi from "ipfs-http-client";
 
 // global variables
 const devURL: string = 'https://dev.api.temporal.cloud';
 const prodURL: string = 'https://api.temporal.cloud';
+const devIPFSURL: string = 'dev.api.ipfs.temporal.cloud';
+const prodIPFSURL: string = 'api.ipfs.temporal.cloud';
 
 class Temporal {
     // class variables
     public endpoint: string;
+    public ipfsendpoint: string;
     public version: string;
     private token: string;
 
     constructor(prod: boolean) {
         if (prod) {
             this.endpoint = prodURL;
+            this.ipfsendpoint = prodIPFSURL;
         } else {
             this.endpoint = devURL;
+            this.ipfsendpoint = devIPFSURL;
         }
         this.version = 'v2';
         this.token = '';
     }
-
 
     /**
      * @notice Registers a new user
@@ -231,6 +235,12 @@ class Temporal {
         });
     }
 
+    /**
+     * Extends hold duration of the given hash
+     * @notice Requires a non-free account
+     * @param hash The ipfs hash to extend the hold time for
+     * @param holdTime The number of months to extend. Total hold time must not be greater than 24 months
+     */
     extendPin(hash: string, holdTime: number) {
         return axios({
         method: 'post',
@@ -278,28 +288,37 @@ class Temporal {
         });
     }
 
-    uploadDirectory(file: string, holdTime: number) {
-        const options = {
-        method: 'POST',
-        uri: `${this.endpoint}/${this.version}/ipfs/public/file/add/directory`,
-        formData: {
-            hold_time: holdTime,
-            file,
-        },
-        headers: {
-            Authorization: `Bearer ${this.token}`,
-        },
-        };
-
-        return rp(options)
-        .then((res) => {
-            const json = JSON.parse(res);
-
-            return json.response;
-        })
-        .catch((err) => {
-            throw new Error(err.response.data.response);
+    /**
+     * Uploads a directory and pins the root hash for 1 month
+     * @notice IF you want to pin for longer than 1 month call the extendPin call afterwards
+     * @param file the path to the directory to upload
+     */
+    uploadDirectory(file: string) {
+        let api = ipfsapi({
+            // the hostname (or ip address) of the endpoint providing the ipfs api
+            host:  this.ipfsendpoint,
+            // the port to connect on
+            port: '443',
+            'api-path': '/api/v0/',
+            // the protocol, https for security
+            protocol: 'https',
+            // provide the jwt within an authorization header
+            headers: {
+                authorization: 'Bearer ' + this.token
+            }
         });
+        api.addFromFs(file, { recursive: true },  function (err, response) {
+            if (err) {
+                console.error(err, err.stack)
+            } else {
+                response.forEach(element => {
+                    if (file.includes(element.path)) {
+                        console.log("make sure to extend pin duration")
+                        return element.path;
+                    }
+                });
+            }
+        })
     }
 
     /**
@@ -394,6 +413,15 @@ class Temporal {
         });
     }
 
+    /**
+     * Submits a search to Lens for ipfs content matching the query
+     * @param query the search query to match content against
+     * @param tags optional tags to filter by
+     * @param categories optional search categories to filter by
+     * @param mimeTypes optional content mime types to filter by
+     * @param hashes optional hashes to filter by
+     * @param required whether or not an exact match is required
+     */
     searchRequest(
         query: string, 
         tags?: string[], // the ?: indicates optional
@@ -422,7 +450,12 @@ class Temporal {
             throw new Error(err.response.data.response);
         });
     }
-
+    
+    /**
+     * Index an IPFS hash to be searchable through lens
+     * @param hash The IPFS hash to idnex
+     * @param type The type of content, use IPLD for all types
+     */
     indexRequest(hash: string, type: string) {
         return axios({
         method: 'post',
