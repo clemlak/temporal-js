@@ -1,5 +1,5 @@
 {
-  "name": "temporal",
+  "name": "temporal-js",
   "version": "1.0.0",
   "description": "a javascript client for Temporal IPFS API",
   "main": "index.js",
