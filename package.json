@@ -7,11 +7,16 @@
     "test": "mocha --timeout 100000"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/RTradeLtd/temporal-js.git"
+    "type": "git",
+    "url": "https://github.com/RTradeLtd/temporal-js.git"
   },
   "homepage": "https://github.com/RTradeLtd/temporal-js",
-  "keywords": ["ipfs", "temporal", "sdk", "temporal-js"],
+  "keywords": [
+    "ipfs",
+    "temporal",
+    "sdk",
+    "temporal-js"
+  ],
   "author": "clemlak (https://github.com/clemlak/)",
   "contributors": [
     "bonedaddy (https://github.com/bonedaddy"
