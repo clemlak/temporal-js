@@ -293,7 +293,7 @@ class Temporal {
      * @notice IF you want to pin for longer than 1 month call the extendPin call afterwards
      * @param file the path to the directory to upload
      */
-    uploadDirectory(file: string) {
+    uploadDirectory(file: string, holdTime: number) {
         let api = ipfsapi({
             // the hostname (or ip address) of the endpoint providing the ipfs api
             host:  this.ipfsendpoint,
