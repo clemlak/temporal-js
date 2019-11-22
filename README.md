@@ -8,4 +8,4 @@ An npm package will be available soon. In the meantime, the library can be insta
 
 ## Test
 
-Run the test with `npm test`.
+Run the test with `npm test` (for some reason only `mocha test` seems to work).
